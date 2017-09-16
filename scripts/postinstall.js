@@ -18,14 +18,16 @@ var newJson = {
     "devDependencies": json.dependencies,
     "dependencies": json.devDependencies,
     "scripts":scripts,
+    "files": [
+        "dist"
+    ]
 };
 
-//todo implement 
+//todo implement
 //command.execute("../../node_modules/.bin/eslint --init")
 
 command.createDir( "../../src",function(){
     command.createDir( "../../test",function(){
-        command.createDir( "../../lib",function(){
             command.copyDir( "./scripts", "../../scripts",function(){
 	            command.copyDir( "./src", "../../src",function(){
 	                command.copyFile( "./webpack.config.js", "../../webpack.config.js",function(){
@@ -43,7 +45,6 @@ command.createDir( "../../src",function(){
 	                });
                 });
             });
-        });
     });
 });
 
