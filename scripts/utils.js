@@ -31,8 +31,27 @@ function getPropertiesFromObj(obj, keys) {
     return target;
 }
 
+function extractPropertiesFromObj(obj, keysToExtract) {
+    var target = {};
+    var keys =  Object.keys(obj);
+    for(var i = 0; i < keys.length; i++){
+        var key = keys[i];
+        if (!Object.prototype.hasOwnProperty.call(obj, key)){
+            continue;
+        }
+        if (keysToExtract.indexOf(key) >= 0) {
+            target[key] = obj[key];
+            delete obj[key];
+        }else{
+            continue;
+        }
+    }
+    return target;
+}
+
 
 module.exports = {
+    extractPropertiesFromObj,
     removePropertiesFromObj,
     getPropertiesFromObj
 };
