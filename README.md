@@ -53,6 +53,7 @@ project
 * `npm run prebuild` - Removes the dist folder
 * `npm run build` - produces bundle version of your project under the `dist` folder.
 * `npm run postbuild` - buildconfig inside scripts is used to execute `copy operation`
+* `npm run publish` -  publish to github gh-pages
 
 ## To-do
 1. Test Framework
