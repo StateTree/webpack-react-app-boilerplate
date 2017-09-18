@@ -8,7 +8,8 @@
     "lint": "./node_modules/.bin/eslint ./src --ext .js --cache --fix --ext .jsx --cache --fix",
     "prebuild": "rimraf dist",
     "build": "./node_modules/.bin/webpack --progress --config webpack.config.js --env prod",
-    "postbuild": "node scripts/postbuild.js"
+    "postbuild": "node scripts/postbuild.js",
+    "publish": "git subtree push --prefix dist origin gh-pages"
   },
   "author": "Sanjay Krishna Anbalagan",
   "license": "MIT",
