@@ -38,6 +38,8 @@ async function executeScript(){
 }
 
 
+executeScript();
+
 
 
 
