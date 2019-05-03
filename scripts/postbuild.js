@@ -32,24 +32,6 @@ function isStandardFileType(type){
 
 
 
-function copy(config,command){
-    if(config["html"]){
-        copyType(config["html"],"html",command)
-    }
-
-    if(config["css"]){
-        copyType(config["css"],"css",command)
-    }
-
-    if(config["json"]){
-        copyType(config["json"],"json",command)
-    }
-
-    if(config["other"]){
-        copyType(config["other"],"other",command)
-    }
-}
-
 function getPath(dirPath,filePath,type){
     var isFileTypeStd = isStandardFileType(type);
     if(isFileTypeStd){
@@ -67,7 +49,7 @@ function getPath(dirPath,filePath,type){
 }
 
 
-function copyType(config,type,command){
+async function copyType(config,type,command){
     if(config){
         const sourceDir = config.sourceDir;
         const sourceFiles = config.sourceFiles;
@@ -76,21 +58,22 @@ function copyType(config,type,command){
             var isFileOrFilesGiven = doWeHaveSourceFileOrFiles(sourceFiles);
             if(isFileOrFilesGiven){
                 if(Array.isArray(sourceFiles)){
-                    sourceFiles.map(function(filePath){
+                    for (var i = 0; i < sourceFiles.length; i++){
+                        const filePath = sourceFiles[i];
                         var srcPath = getPath(sourceDir, filePath, type);
                         var destinationPath = getPath(destinationDir, filePath, type);
-                        command.copyFile(srcPath, destinationPath);
-                    })
+                        await command.copyFile(srcPath, destinationPath);
+                    }
                 }else{
                     var filePath = sourceFiles;
                     var srcPath = getPath(sourceDir, filePath, type);
                     var destinationPath = getPath(destinationDir, filePath, type);
-                    command.copyFile(srcPath, destinationPath);
+                    await command.copyFile(srcPath, destinationPath);
                 }
             }else{
                 if(sourceDir){
                     if(destinationDir){
-                        command.copyDir(sourceDir,destinationDir);
+                        await command.copyDir(sourceDir,destinationDir);
                     }else{
                         console.error("Destination Directory Missing")
                     }
@@ -99,6 +82,24 @@ function copyType(config,type,command){
                 }
             }
         }
+    }
+}
+
+async function copy(config,command){
+    if(config["html"]){
+        await copyType(config["html"],"html",command)
+    }
+
+    if(config["css"]){
+        await copyType(config["css"],"css",command)
+    }
+
+    if(config["json"]){
+        await copyType(config["json"],"json",command)
+    }
+
+    if(config["other"]){
+        await copyType(config["other"],"other",command)
     }
 }
 
