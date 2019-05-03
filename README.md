@@ -4,7 +4,7 @@ Webpack babel based boilerplate for creating React Apps (Input: ES6, Output: bun
 
 ## Features
 
-* Webpack 3.
+* Webpack 4.
 * ES6 as a source.
 
 ## Process

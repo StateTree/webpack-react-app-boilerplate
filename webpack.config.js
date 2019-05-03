@@ -1,10 +1,10 @@
 const webpack = require("webpack");
 const path = require("path");
-const env  = require("yargs").argv.env; // use --env with webpack 2
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 const paths = {
-    context: path.join(__dirname, "./src/"),
-    output: path.join(__dirname, "./dist/"),
+	context: path.join(__dirname, "./src/"),
+	output: path.join(__dirname, "./dist/"),
 	entry: {
     	app:"./index.js"
 	}
@@ -13,82 +13,39 @@ const paths = {
 
 
 const config = {
+	mode: 'development',
 	context: paths.context,
 	entry: paths.entry,
 	output: {
-        path: paths.output,
+		path: paths.output,
 		filename: "[name].js"
 	},
 	module: {
 		rules: [
-
-            {
-                test: /\.css$/,
-                loader: 'css-loader'
-            },
 			{
-				test: /\.(jsx|js)$/,
-				loader: "babel-loader",
-				exclude: /node_modules/
+				test: /\.(js|jsx)$/,
+				exclude: /node_modules/,
+				use: {
+					loader: "babel-loader"
+				}
+			},
+			{
+				test: /\.css$/,
+				use: ['style-loader', 'css-loader']
 			}
 		]
-
-	},
-	resolve: { // In resolve we tell Webpack where to look for modules. as of Webpack ^2.0 important to give node modules folder too
-		extensions: [".js", ".jsx"],
-		modules: [paths.context,"node_modules"],
 	},
 	plugins: [
-		new webpack.optimize.CommonsChunkPlugin({
-			children: true,
-			async: true
-		}),
-		new webpack.optimize.MinChunkSizePlugin({
-			minChunkSize: 2500
-		})
-	]
+		new CleanWebpackPlugin(['dist']),
+		new webpack.HotModuleReplacementPlugin()
+	],
+	devtool: 'inline-source-map',
+	devServer: {
+		contentBase: './src',
+		hot: true,
+		compress: true,
+		port: 3001
+	},
 };
-
-if (env === 'prod'){
-    config.devtool =  "hidden-source-map";
-    config.plugins.push(new webpack.optimize.UglifyJsPlugin({
-		compress: {
-			warnings: false,
-			drop_console: true,
-			drop_debugger: true,
-			screw_ie8: true
-		},
-		output: {
-			comments: false
-		},
-		sourceMap: false,
-		beautify: false,
-		mangle: {
-            screw_ie8: true,
-			keep_fnames: true
-		},
-        comments: false
-	}));
-    config.plugins.push(new webpack.LoaderOptionsPlugin({
-        minimize: true,
-        debug: false
-    }));
-} else {
-    config.devtool =  "#inline-source-map";
-    config.devServer = {
-    	contentBase: paths.context,
-		publicPath: '/',
-		historyApiFallback: {
-    		index: '/'
-		},
-		inline: true,
-		port: 8080,
-		stats: {
-    		chunks: false,
-			children: false
-		},
-		clientLogLevel: 'info'
-	}
-}
 
 module.exports = config;
