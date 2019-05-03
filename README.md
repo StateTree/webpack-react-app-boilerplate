@@ -39,7 +39,7 @@ project
 ## How to use
 
 1. Create your App project `npm init`
-2. `npm install git+http://github.com/StateTree/webpack-react-app-boilerplate.git`
+2. `npm install --no-save git+http://github.com/StateTree/webpack-react-app-boilerplate.git`
 	1. This will create src, dist, test, docs directory
 	2. Creates babel and webpack config
 	3. Updates your package.json properties `devDependencies`, `dependencies` and `scripts`
