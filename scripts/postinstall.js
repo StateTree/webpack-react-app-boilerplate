@@ -22,29 +22,20 @@ var newJson = {
     ]
 };
 
-command.createDir( "../../src",function(){
-    command.createDir( "../../test",function(){
-        command.copyDir( "./scripts", "../../scripts",function(){
-            command.copyDir( "./src", "../../src",function(){
-                command.copyFile( "./webpack.config.js", "../../webpack.config.js",function(){
-                    command.copyFile( "./.babelrc", "../../.babelrc",function(){
-                        command.copyFile( "./.eslintrc.json", "../../.eslintrc.json",function(){
-                            command.copyFile( "./.gitignore", "../../.gitignore",function(){
-                                command.updateJson( "../../package.json", newJson,function(){
-                                    command.remove("../../scripts/postinstall.js",function(){
-                                        command.remove("../../scripts/utils.js",function(){
-                                            command.remove("../../node_modules/boilerplate")
-                                        })
-                                    })
-                                });
-                            });
-                        })
-                    });
-                });
-            });
-        });
-    });
-});
+async function executeScript(){
+    await command.createDir( "../../src");
+    await command.createDir( "../../test");
+    await command.copyDir( "./scripts", "../../scripts");
+    await command.copyDir( "./src", "../../src");
+    await command.copyFile( "./webpack.config.js", "../../webpack.config.js");
+    await command.copyFile( "./.babelrc", "../../.babelrc");
+    await command.copyFile( "./.eslintrc.json", "../../.eslintrc.json");
+    //await command.copyFile( "./.gitignore", "../../.gitignore");
+    await command.updateJson( "../../package.json", newJson);
+    await command.remove( "../../scripts/postinstall.js");
+    await command.remove( "../../scripts/utils.js");
+    await command.remove( "../../node_modules/boilerplate");
+}
 
 
 
